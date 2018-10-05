@@ -1,0 +1,2 @@
+# SearchCriteriaFormatter
+Format search criteria
