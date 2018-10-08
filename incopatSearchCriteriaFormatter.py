@@ -229,5 +229,5 @@ def scFormatter(string):
 
 if __name__ == "__main__":
     import sys
-    data = "".join(sys.stdin.readlines()[:-1]) #接受管道输入的其它参数
+    data = "".join(sys.stdin.readlines()) #接受管道输入的其它参数
     print(scFormatter(data))
