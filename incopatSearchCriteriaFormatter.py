@@ -29,7 +29,7 @@ tokens = (
 
 # Regular expression rules for simple tokens
 t_EQUAL        = r'='
-t_CONNECT      = r'\(\s*[1-9]?[wWnN]\s*\)'
+t_CONNECT      = r'\(\s*([1-9]?[wWnN]|sen)\s*\)'
 t_LPARENTHESIS = r'\('
 t_RPARENTHESIS = r'\)'
 t_LBRACKET     = r'\['
