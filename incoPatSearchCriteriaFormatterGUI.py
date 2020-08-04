@@ -48,7 +48,7 @@ class Application_ui(Frame):
         self.exportbutton = Button(self.top, text = '复制检索要素到剪贴板', command = self.exportElement, style = 'TCommand1.TButton')
         self.exportbutton.grid(row = 0, column = 3, sticky = W+E)
 
-        self.exportbutton = Button(self.top, text = '打开 PatentHub', command = self.openBrowser, style = 'TCommand1.TButton')
+        self.exportbutton = Button(self.top, text = '打开 incoPat', command = self.openBrowser, style = 'TCommand1.TButton')
         self.exportbutton.grid(row = 0, column = 4, sticky = W+E)
 
         self.Text1Font = Font(font=('Courier New', 10))
@@ -68,7 +68,7 @@ class Application(Application_ui):
                 raise
         except:
             print("未在剪贴板中发现文本内容!")
-        self.exportbutton = Button(self.top, text = '打开 PatentHub', command = self.openBrowser, style = 'TCommand1.TButton')
+        self.exportbutton = Button(self.top, text = '打开 incoPat', command = self.openBrowser, style = 'TCommand1.TButton')
         self.exportbutton.grid(row = 0, column = 2, sticky = W+E)
 
         self.Text1Font = Font(font=('Courier New', 10))
