@@ -5,6 +5,7 @@ import os
 import re
 
 from ply import lex
+from wcwidth import wcswidth
 
 KEYWORD_regex_string = r'(t|ti|ts|s|tsc|desc|tscd|eti|cti|ab|eab|cab|cl|ecl|d|eds|ap|fap|addr|aee|caee|in|ag|at|n|dn|an|pr|dd|ddy|ddm|ad|ady|adm|pctDate|ipc|ipc-section|ipc-class|ipc-subclass|ipc-group|ipc-subgroup|ipc-main|ipcm-section|ipcm-class|ipcm-subclass|ipcm-group|ipcm-subgroup|uspc|uspcc|fi|ft|loc|cpc|ls|currentStatus|type|cc|acc|kc|lang|apt|ap-zip|country|province|city|aeet|caeet|agc|legalTag|legalEvent|maintainYears|citedCount|citingCount|level|judgment\.date|judgment\.title|judgment\.caseId|judgment\.court|judgment\.province|judgment\.city|judgment\.accuser|judgment\.defendant)(?=\s*:)'
 regex = re.compile(KEYWORD_regex_string, flags = re.IGNORECASE)
@@ -172,7 +173,7 @@ def scFormatter(string):
                 newline = newline[:-4]
             newline += tok.value.lower() + ' '
         elif tok.type == "OR":
-            if len(newline) > 100:
+            if wcswidth(newline) > 100:
                 result.append(newline.rstrip())
                 newline = '' + indent
 
