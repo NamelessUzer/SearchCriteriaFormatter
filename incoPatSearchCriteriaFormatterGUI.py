@@ -27,7 +27,7 @@ class Application_ui(Frame):
         self.top = self.winfo_toplevel()
 
         self.style = Style()
-        
+
         self.top.columnconfigure(0, weight = 1)
         self.top.columnconfigure(1, weight = 1)
         self.top.columnconfigure(2, weight = 1)
@@ -104,7 +104,7 @@ class Application(Application_ui):
             self.textarea.clipboard_clear()
             self.textarea.clipboard_append(text)
         return text or ''
-    
+
     def exportResult_oneline(self, event = None):
         text = self.textarea.get('1.0', END)
         if text:
@@ -114,7 +114,7 @@ class Application(Application_ui):
             self.textarea.clipboard_clear()
             self.textarea.clipboard_append(text)
         return text or ''
-    
+
     def getElement(self, string):
         # Build the lexer
         lexer = lex.lex()
@@ -142,7 +142,7 @@ class Application(Application_ui):
             text = self.getElement(text)
             self.textarea.clipboard_append(text)
         return text or ''
-    
+
     def openBrowser(self, event = None):
         webbrowser.open(url)
 

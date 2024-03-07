@@ -7,7 +7,19 @@ import re
 from ply import lex
 from wcwidth import wcswidth
 
-KEYWORD_regex_string = r'(r|ab|ab-otlang|ab-ts|abo|ad|adm|ady|aee|aeenor|agc|all|an|ann|aor|ap|ap-add|ap-country|ap-or|ap-ot|ap-otadd|ap-pc|ap-province|ap-ts|ap-type|apnor|assign-city|assign-country|assign-date|assign-flag|assign-party|assign-state|assign-text|assignee-add|assignee-cadd|assignyear|at|at-add|at-city|at-country|at-state|auth|bclas1|bclas2|bclas3|cf|cfn|city|claim|claim-en|claim-or|claim-ts|class|cn-dc|county|cp-dc|cpc|cpc-class|cpc-group|cpc-section|cpc-subclass|cpc-subgroup|ct|ct-ad|ct-ap|ct-auth|ct-code|ct-no|ct-pd|ct-times|ctfw|ctfw-ad|ctfw-ap|ctfw-auth|ctfw-no|ctfw-pd|ctfw-times|ctnp|ctyear|customs-flag|des|des-or|doc-dc|ecd|ecla|ecla-class|ecla-group|ecla-section|ecla-subclass|ecla-subgroup|ex|ex-time|expiry-date|fa-country|fam-dc|fc-dc|fct|fct-ap|fct-times|fctfw|fctfw-ap|fctfw-times|fi|filing-lang|ft|full|grant-date|ian|if|ifn|in|in-add|in-ap|in-city|in-country|in-state|ipc|ipc-class|ipc-group|ipc-main|ipc-section|ipc-subclass|ipc-subgroup|ipcm-class|ipcm-group|ipcmaintt|ipcm-section|ipcm-subclass|ipn|lawtxt|lee|lee-current|lg|lgc|lgd|lge|lgf|lgi-case|lgi-court|lgi-date|lgi-defendant|lgi-firm|lgi-flag|lgi-judge|lgi-no|lgi-party|lgi-plantiff|lgi-region|lgi-text|lgi-ti|lgi-type|lgiyear|licence-flag|license-cs|license-date|license-no|license-sd|license-stage|license-td|license-type|licenseyear|loc|lor|mf|mfn|no-claim|number|page|patent-life|patentee|patenteenor|pc-cn|pd|pdm|pdy|pee|pee-current|pfex-time|phc|pledge-cd|pledge-date|pledge-no|pledge-rd|pledge-stage|pledge-term|pledge-type|pledgeyear|plege-flag|pn|pnc|pnk|pnn|por|pr|pr-au|pr-date|prd|prn|pryear|pt|pu-date|re-ap|ree-flag|ref-dc|reward-level|reward-name|reward-session|ri-ae|ri-ap|ri-basis|ri-date|ri-inernal|ri-leader|ri-me|ri-num|ri-point|ri-text|ri-type|riyear|status|status-lite|std-company|std-etsi|std-flag|std-num|subex-date|ti|ti-otlang|ti-ts|tiab|tiabc|tio|uc|uc-main|vlstar|who|ap|ap-or|ap-ot|ap-ts|apnor|aee|aor|assign-party|aeenor|ap-otadd|in|lor|lee|lgi-party|at|agc|re-ap|in-ap|ri-me|ri-ae|ri-leader|por|pee|ex|ap-type|who|patentee|patenteenor|aptt|ap-ortt|ap-ottt|ap-tstt|apnortt|aeett|aortt|assign-partytt|aeenortt|ap-otaddtt|intt|lortt|leett|lgi-partytt|attt|agctt|re-aptt|in-aptt|ri-mett|ri-aett|ri-leadertt|portt|peett|extt|ap-typett|whott|patenteett|patenteenortt|ipc-low|ipc-high|IPCM-Low|IPCM-High)(?=\s*=)'
+KEYWORD_regex_string = r'''(
+    r|rad|rpd|
+    ti|ab|tiab-dwpi|claim|ipc|loc|an|rand-DWPI|ad|pn|pd|ap|aee|ap-add|ap-country|in|in-DWPI|lor|lee|lg|ri-text|status|lgi-party|
+    ti|ti-cn|ti-otlang|ti-en|ti-dwpi|ab|ab-cn|ab-otlang|ab-en|use-dwpi|adv-dwpi|novelty-dwpi|abstract-dwpi|DTD-DWPI|ACTIVITY-DWPI|MEC-DWPI|FOC-DWPI|DRAW-DWPI|tiab|tiab-dwpi|claim|first-claim|first-claim-or|indepclaims-cn|depclaims-cn|no-indepclaims|no-depclaims|first-claim-ts|len-first-claim|Claim-EN|Claim-CN|Claim-OT|no-claim|tiabc|des|des-ot|des-en|des-cn|technical-field|background-art|disclosure|mode-for-invention|use-cn|use-en|effect-s-cn|effect-ph-cn|effect-cn|effect-cn-3|effect-cn-2|effect-cn-1|effect-triz|all|full|filing-lang|prd|PRD-DWPI|page|vlstar|vlstar-1|vlstar-2|vlstar-3|reward-level|reward-name|reward-session|std-type|std-Project|std-num|std-company|std-flag|cas-no|drug-name-cn|drug-name-en|company|Brand-Name|active-ingredient|Target|indication|patent-expiration|PED-patent-expiration|
+    ap|ap-group|ap-grouptt|AP-ALL|aptt|CO-DWPI|ap-or|ap-ot|ap-ts|apnor|ap-first|no-ap|aee|aeett|aor|assign-party|aeenor|AOR-TYPE|intt|AEE-TYPE|ap-otadd|in|in-or|in-ot|in-ts|in-first|no-in|in-new-name|in-current|lor|lee|LOR-TYPE|LEE-TYPE|lgi-party|at|agc|re-ap|in-ap|ri-me|ri-ae|ri-leader|por|pee|ex|ap-type|ck-DWPI|CK-TYPE-DWPI|who|patentee|patenteett|patenteenor|ap-new-name|ap-as|ap-en|ap-reg-location|ap-company-org-type|ap-estiblish-time|ap-usc|ap-reg-number|ap-reg-status|ap-list-code|opponent|
+    ipc|ipc-main|ipc-section|ipc-class|ipc-subclass|ipc-group|IPCM-Section|IPCM-Class|IPCM-Subclass|IPCM-Group|ipc-subgroup|ipc-low|ipc-high|IPCM-Low|IPCM-High|IPC-DWPI|IPC-Section-dwpi|IPC-Class-dwpi|loc|IPC-Subclass-DWPI|IPC-GROUP-dwpi|IPC-Subgroup-DWPI|IPC-f-DWPI|IPC-Section-f-dwpi|IPC-Class-f-dwpi|IPC-Subclass-f-DWPI|IPC-GROUP-f-dwpi|IPC-Subgroup-f-DWPI|DC-DWPI|DC-SECTION-DWPI|DC-CLASS-DWPI|MC-DWPI|MC-section-DWPI|MC-class-DWPI|MC-group-DWPI|MC-subgroup-DWPI|MC-subgroupd-DWPI|MC-fullmc-DWPI|MC-fullmcx-DWPI|loc-class|loc|loc-subclass|ecla|ecla-section|ecla-class|ecla-subclass|ecla-group|ecla-subgroup|uc|uc-main|cpc|cpc-section|cpc-class|cpc-subclass|cpc-group|cpc-subgroup|fi|bclass|mbclas1|mbclas2|mbclas3|mbclas4|mbclass|ft|Class|bclas1|bclas2|bclas3|bclas4|cpc-main|cpcm-section|cpcm-class|cpcm-subclass|cpcm-group|cpcm-subgroup|industry1|mindustry1|mindustry2|industry2|Industry-type|Mkclas1|Mkclas2|sc-main|sc-section|sc-class|sc-subclass|Lngclas1|Lngclas2|Lngclas3|Cpclas1|Cpclas2|Cpclas3|digclas1|digclas2|digclas3|
+    ap-country|in-country|auth|pnc|ap-add|pr-au|pr-au-DWPI|ORIPRC-DWPI|ap-province|pc-cn|ap-pc|city|county|PATENTEE-ADD|PATENTEE-PROVINCE|PATENTEE-CITY|PATENTEE-COUNTY|in-add|IN-ADD-OTH|IN-OR-ADD|in-city|in-state|assign-country|assignee-add|assignee-cadd|assign-state|assign-city|AEE-PROVINCE|AEE-CITY|AEE-COUNTY|ASSIGNOR-ADD|AOR-PROVINCE|AOR-CITY|AOR-COUNTY|at-country|at-add|at-city|at-state|lgi-region|where|
+    ap-country|in-country|auth|pnc|ap-add|pr-au|pr-au-DWPI|ORIPRC-DWPI|ap-province|pc-cn|ap-pc|city|county|PATENTEE-ADD|PATENTEE-PROVINCE|PATENTEE-CITY|PATENTEE-COUNTY|in-add|IN-ADD-OTH|IN-OR-ADD|in-city|in-state|assign-country|assignee-add|assignee-cadd|assign-state|assign-city|AEE-PROVINCE|AEE-CITY|AEE-COUNTY|ASSIGNOR-ADD|AOR-PROVINCE|AOR-CITY|AOR-COUNTY|at-country|at-add|at-city|at-state|lgi-region|where|
+    ad|radd-DWPI|adm|ady|pd|PU-DATE|pdy|pdm|pr-date|pr-date-DWPI|pryear|ori-prdate|ct-ad|ct-pd|ctfw-ad|ctfw-pd|ctyear|subex-date|GRANT-DATE|EXDT|expiry-date|expiry-year|ecd|pledgeyear|assignyear|licenseyear|assign-date|assign-rd|ri-date|lgi-date|lgi-fd|lgi-cd|lgd|pledge-date|license-date|license-sd|license-td|pledge-cd|pledge-rd|lgiyear|lgi-fy|lgi-cy|patent-life|ex-time|pfex-time|re-date|in-date|or-date|reapp-date|inapp-date|ori-pryear|ori-pryear-DWPI|
+    status|status-lite|lg|lge|lgf|lgc|ri-type|ri-text|ri-ap|inapp-date|re-decision|ri-basis|ri-point|lgi-court|lgi-judge|lgi-firm|lawyer|lgi-cause|assign-text|lgi-ti|lgi-text|lgi-type|lgi-no|lgi-procedure|lgi-plaintiff|lgi-defendant|license-type|license-stage|license-cs|lee-current|pee-current|pledge-type|pledge-stage|lawtxt|assign-flag|Assign-times|assign-no|licence-flag|Licence-times|plege-flag|pledge-times|ree-flag|lgi-flag|Lgi-times|action-types|customs-Flag|all-flag|Tovalide-date|
+    ct|ctfw|ct-self|ct-oth|ctfw-self|ctfw-oth|ct-times|ctfw-times|ct-self-times|ct-oth-times|ctfw-self-times|ctfw-oth-times|fct|fctfw|ct-ap|ctfw-ap|fct-ap|fctfw-ap|ct-no|ctfw-no|ct-auth|ctfw-auth|ct-code|ct-X|fct-times|fctfw-times|ctnp|ct-source|ctfw-source
+)(?=\s*=)'''
+
 regex = re.compile(KEYWORD_regex_string, flags = re.IGNORECASE)
 reserved = {
             'and' : 'AND'
@@ -37,7 +49,18 @@ t_LBRACKET     = r'\['
 t_RBRACKET     = r'\]'
 
 def t_KEYWORD(t):
-    r'(r|ab|ab-otlang|ab-ts|abo|ad|adm|ady|aee|aeenor|agc|all|an|ann|aor|ap|ap-add|ap-country|ap-or|ap-ot|ap-otadd|ap-pc|ap-province|ap-ts|ap-type|apnor|assign-city|assign-country|assign-date|assign-flag|assign-party|assign-state|assign-text|assignee-add|assignee-cadd|assignyear|at|at-add|at-city|at-country|at-state|auth|bclas1|bclas2|bclas3|cf|cfn|city|claim|claim-en|claim-or|claim-ts|class|cn-dc|county|cp-dc|cpc|cpc-class|cpc-group|cpc-section|cpc-subclass|cpc-subgroup|ct|ct-ad|ct-ap|ct-auth|ct-code|ct-no|ct-pd|ct-times|ctfw|ctfw-ad|ctfw-ap|ctfw-auth|ctfw-no|ctfw-pd|ctfw-times|ctnp|ctyear|customs-flag|des|des-or|doc-dc|ecd|ecla|ecla-class|ecla-group|ecla-section|ecla-subclass|ecla-subgroup|ex|ex-time|expiry-date|fa-country|fam-dc|fc-dc|fct|fct-ap|fct-times|fctfw|fctfw-ap|fctfw-times|fi|filing-lang|ft|full|grant-date|ian|if|ifn|in|in-add|in-ap|in-city|in-country|in-state|ipc|ipc-class|ipc-group|ipc-main|ipc-section|ipc-subclass|ipc-subgroup|ipcm-class|ipcm-group|ipcmaintt|ipcm-section|ipcm-subclass|ipn|lawtxt|lee|lee-current|lg|lgc|lgd|lge|lgf|lgi-case|lgi-court|lgi-date|lgi-defendant|lgi-firm|lgi-flag|lgi-judge|lgi-no|lgi-party|lgi-plantiff|lgi-region|lgi-text|lgi-ti|lgi-type|lgiyear|licence-flag|license-cs|license-date|license-no|license-sd|license-stage|license-td|license-type|licenseyear|loc|lor|mf|mfn|no-claim|number|page|patent-life|patentee|patenteenor|pc-cn|pd|pdm|pdy|pee|pee-current|pfex-time|phc|pledge-cd|pledge-date|pledge-no|pledge-rd|pledge-stage|pledge-term|pledge-type|pledgeyear|plege-flag|pn|pnc|pnk|pnn|por|pr|pr-au|pr-date|prd|prn|pryear|pt|pu-date|re-ap|ree-flag|ref-dc|reward-level|reward-name|reward-session|ri-ae|ri-ap|ri-basis|ri-date|ri-inernal|ri-leader|ri-me|ri-num|ri-point|ri-text|ri-type|riyear|status|status-lite|std-company|std-etsi|std-flag|std-num|subex-date|ti|ti-otlang|ti-ts|tiab|tiabc|tio|uc|uc-main|vlstar|who|ap|ap-or|ap-ot|ap-ts|apnor|aee|aor|assign-party|aeenor|ap-otadd|in|lor|lee|lgi-party|at|agc|re-ap|in-ap|ri-me|ri-ae|ri-leader|por|pee|ex|ap-type|who|patentee|patenteenor|aptt|ap-ortt|ap-ottt|ap-tstt|apnortt|aeett|aortt|assign-partytt|aeenortt|ap-otaddtt|intt|lortt|leett|lgi-partytt|attt|agctt|re-aptt|in-aptt|ri-mett|ri-aett|ri-leadertt|portt|peett|extt|ap-typett|whott|patenteett|patenteenortt)(?=\s*=)'
+    r'''(
+    r|rad|rpd|
+    ti|ab|tiab-dwpi|claim|ipc|loc|an|rand-DWPI|ad|pn|pd|ap|aee|ap-add|ap-country|in|in-DWPI|lor|lee|lg|ri-text|status|lgi-party|
+    ti|ti-cn|ti-otlang|ti-en|ti-dwpi|ab|ab-cn|ab-otlang|ab-en|use-dwpi|adv-dwpi|novelty-dwpi|abstract-dwpi|DTD-DWPI|ACTIVITY-DWPI|MEC-DWPI|FOC-DWPI|DRAW-DWPI|tiab|tiab-dwpi|claim|first-claim|first-claim-or|indepclaims-cn|depclaims-cn|no-indepclaims|no-depclaims|first-claim-ts|len-first-claim|Claim-EN|Claim-CN|Claim-OT|no-claim|tiabc|des|des-ot|des-en|des-cn|technical-field|background-art|disclosure|mode-for-invention|use-cn|use-en|effect-s-cn|effect-ph-cn|effect-cn|effect-cn-3|effect-cn-2|effect-cn-1|effect-triz|all|full|filing-lang|prd|PRD-DWPI|page|vlstar|vlstar-1|vlstar-2|vlstar-3|reward-level|reward-name|reward-session|std-type|std-Project|std-num|std-company|std-flag|cas-no|drug-name-cn|drug-name-en|company|Brand-Name|active-ingredient|Target|indication|patent-expiration|PED-patent-expiration|
+    ap|ap-group|ap-grouptt|AP-ALL|aptt|CO-DWPI|ap-or|ap-ot|ap-ts|apnor|ap-first|no-ap|aee|aeett|aor|assign-party|aeenor|AOR-TYPE|intt|AEE-TYPE|ap-otadd|in|in-or|in-ot|in-ts|in-first|no-in|in-new-name|in-current|lor|lee|LOR-TYPE|LEE-TYPE|lgi-party|at|agc|re-ap|in-ap|ri-me|ri-ae|ri-leader|por|pee|ex|ap-type|ck-DWPI|CK-TYPE-DWPI|who|patentee|patenteett|patenteenor|ap-new-name|ap-as|ap-en|ap-reg-location|ap-company-org-type|ap-estiblish-time|ap-usc|ap-reg-number|ap-reg-status|ap-list-code|opponent|
+    ipc|ipc-main|ipc-section|ipc-class|ipc-subclass|ipc-group|IPCM-Section|IPCM-Class|IPCM-Subclass|IPCM-Group|ipc-subgroup|ipc-low|ipc-high|IPCM-Low|IPCM-High|IPC-DWPI|IPC-Section-dwpi|IPC-Class-dwpi|loc|IPC-Subclass-DWPI|IPC-GROUP-dwpi|IPC-Subgroup-DWPI|IPC-f-DWPI|IPC-Section-f-dwpi|IPC-Class-f-dwpi|IPC-Subclass-f-DWPI|IPC-GROUP-f-dwpi|IPC-Subgroup-f-DWPI|DC-DWPI|DC-SECTION-DWPI|DC-CLASS-DWPI|MC-DWPI|MC-section-DWPI|MC-class-DWPI|MC-group-DWPI|MC-subgroup-DWPI|MC-subgroupd-DWPI|MC-fullmc-DWPI|MC-fullmcx-DWPI|loc-class|loc|loc-subclass|ecla|ecla-section|ecla-class|ecla-subclass|ecla-group|ecla-subgroup|uc|uc-main|cpc|cpc-section|cpc-class|cpc-subclass|cpc-group|cpc-subgroup|fi|bclass|mbclas1|mbclas2|mbclas3|mbclas4|mbclass|ft|Class|bclas1|bclas2|bclas3|bclas4|cpc-main|cpcm-section|cpcm-class|cpcm-subclass|cpcm-group|cpcm-subgroup|industry1|mindustry1|mindustry2|industry2|Industry-type|Mkclas1|Mkclas2|sc-main|sc-section|sc-class|sc-subclass|Lngclas1|Lngclas2|Lngclas3|Cpclas1|Cpclas2|Cpclas3|digclas1|digclas2|digclas3|
+    ap-country|in-country|auth|pnc|ap-add|pr-au|pr-au-DWPI|ORIPRC-DWPI|ap-province|pc-cn|ap-pc|city|county|PATENTEE-ADD|PATENTEE-PROVINCE|PATENTEE-CITY|PATENTEE-COUNTY|in-add|IN-ADD-OTH|IN-OR-ADD|in-city|in-state|assign-country|assignee-add|assignee-cadd|assign-state|assign-city|AEE-PROVINCE|AEE-CITY|AEE-COUNTY|ASSIGNOR-ADD|AOR-PROVINCE|AOR-CITY|AOR-COUNTY|at-country|at-add|at-city|at-state|lgi-region|where|
+    ap-country|in-country|auth|pnc|ap-add|pr-au|pr-au-DWPI|ORIPRC-DWPI|ap-province|pc-cn|ap-pc|city|county|PATENTEE-ADD|PATENTEE-PROVINCE|PATENTEE-CITY|PATENTEE-COUNTY|in-add|IN-ADD-OTH|IN-OR-ADD|in-city|in-state|assign-country|assignee-add|assignee-cadd|assign-state|assign-city|AEE-PROVINCE|AEE-CITY|AEE-COUNTY|ASSIGNOR-ADD|AOR-PROVINCE|AOR-CITY|AOR-COUNTY|at-country|at-add|at-city|at-state|lgi-region|where|
+    ad|radd-DWPI|adm|ady|pd|PU-DATE|pdy|pdm|pr-date|pr-date-DWPI|pryear|ori-prdate|ct-ad|ct-pd|ctfw-ad|ctfw-pd|ctyear|subex-date|GRANT-DATE|EXDT|expiry-date|expiry-year|ecd|pledgeyear|assignyear|licenseyear|assign-date|assign-rd|ri-date|lgi-date|lgi-fd|lgi-cd|lgd|pledge-date|license-date|license-sd|license-td|pledge-cd|pledge-rd|lgiyear|lgi-fy|lgi-cy|patent-life|ex-time|pfex-time|re-date|in-date|or-date|reapp-date|inapp-date|ori-pryear|ori-pryear-DWPI|
+    status|status-lite|lg|lge|lgf|lgc|ri-type|ri-text|ri-ap|inapp-date|re-decision|ri-basis|ri-point|lgi-court|lgi-judge|lgi-firm|lawyer|lgi-cause|assign-text|lgi-ti|lgi-text|lgi-type|lgi-no|lgi-procedure|lgi-plaintiff|lgi-defendant|license-type|license-stage|license-cs|lee-current|pee-current|pledge-type|pledge-stage|lawtxt|assign-flag|Assign-times|assign-no|licence-flag|Licence-times|plege-flag|pledge-times|ree-flag|lgi-flag|Lgi-times|action-types|customs-Flag|all-flag|Tovalide-date|
+    ct|ctfw|ct-self|ct-oth|ctfw-self|ctfw-oth|ct-times|ctfw-times|ct-self-times|ct-oth-times|ctfw-self-times|ctfw-oth-times|fct|fctfw|ct-ap|ctfw-ap|fct-ap|fctfw-ap|ct-no|ctfw-no|ct-auth|ctfw-auth|ct-code|ct-X|fct-times|fctfw-times|ctnp|ct-source|ctfw-source
+)(?=\s*=)'''
     t.type = 'KEYWORD'
     t.value = t.value.lower()
     return t
@@ -48,7 +71,7 @@ def t_VALUE(t):
     r'"[^="]+"|[^=\s\(\)\[\]]+'
     t.type = reserved.get(t.value.lower(), 'VALUE')
     t.value = re.sub(' +', ' ', t.value)#将多个连续的空格替换为单个空格
-    t.value = re.sub('(?<=")[\s\n\t ]+|[\s\n\t]+(?=")', '', t.value)#将紧靠双引号内侧的空格删除
+    t.value = re.sub(r'(?<=")[\s\n\t ]+|[\s\n\t]+(?=")', '', t.value)#将紧靠双引号内侧的空格删除
     return t
 
 # Define a rule so we can track line numbers
@@ -89,7 +112,7 @@ def scFormatter(string):
         if tok.type in ("LPARENTHESIS", "LBRACKET"):
 ######测试代码{
 #如果一行代码以(or|and|not) (结尾且不仅仅只包括or|and|not，那么就在or|and|not前换行
-            match = re.match('^(?P<head>.*?)\s+(?P<tail>(?:or|and|not))\s*$', newline)
+            match = re.match(r'^(?P<head>.*?)\s+(?P<tail>(?:or|and|not))\s*$', newline)
             if match:
                 if match.group('head'):
                     result.append(match.group('head'))
@@ -101,7 +124,7 @@ def scFormatter(string):
 ######测试代码}
             elif newline.endswith(' = '):
                 pass
-            elif re.search(t_CONNECT + '\s*$', newline):
+            elif re.search(t_CONNECT + r'\s*$', newline):
                 pass
             elif newline.strip() != '':
                 newline = newline.rstrip()
@@ -133,7 +156,7 @@ def scFormatter(string):
             # newline += indent
 
         elif tok.type == "KEYWORD":
-            match = re.match('(?P<head>\S+?)\s+(?P<tail>or|and|not)\s*$', newline)
+            match = re.match(r'(?P<head>\S+?)\s+(?P<tail>or|and|not)\s*$', newline)
             if match:
                 # if match.group('head'):
                 result.append(match.group('head'))
@@ -151,7 +174,7 @@ def scFormatter(string):
             newline += tok.value + ' '
 
         elif tok.type == "CONNECT":
-            tok.value = re.sub('\(\s*([1-9]?)\s*([wn])\s*\)', '(\g<1>\g<2>)', tok.value.lower())
+            tok.value = re.sub(r'\(\s*([1-9]?)\s*([wn])\s*\)', r'(\g<1>\g<2>)', tok.value.lower())
             if newline.strip() == '' and result[-1].endswith(')'):
                 if result[-1].strip() != ')':
                     #连字符紧跟在右括号后边时，不换行
@@ -215,16 +238,16 @@ def scFormatter(string):
         else:
             result = '\n'.join(filter(None, result))
 
-        result = re.sub('\([\n\s]*\)', '', result)#删除空括号对（自动补全括号时，有可能会产生空括号对。
-        result = re.sub('^\s*(and|or|not)*\s*$', '', result, flags = re.M)#删除只有and or not的行以及空行。
+        result = re.sub(r'\([\n\s]*\)', '', result)#删除空括号对（自动补全括号时，有可能会产生空括号对。
+        result = re.sub(r'^\s*(and|or|not)*\s*$', '', result, flags = re.M)#删除只有and or not的行以及空行。
         result = re.sub(r'[A-Z]([A-Za-z-]*?[A-Za-z])?(?=\s*=\s*)', lambda matched : matched.group(0).lower(), result)
         result = re.sub(r'(?P<quote>")?(?P<ipc>\b(?P<section>[A-H])(?(section)(?P<class>\d{2})?)(?(class)(?P<subclass>[A-Z])?)(?(subclass)(?P<group>\d{1,})?)(?(group)(?:/(?P<subgroup>\d{1,}))?)\b)(?(quote)")',
                         lambda matched : matched.group('ipc').upper(), result, flags = re.IGNORECASE)
         #将所有ipc分类号转为大写
         result = re.sub(r'\b(?P<country>am|ap|ar|at|au|ba|be|bg|br|by|ca|ch|cl|cn|co|cr|cs|cu|cy|cz|dd|de|dk|do|dz|ea|ec|ee|eg|ep|es|fi|fr|gb|gc|ge|gr|gt|hk|hn|hr|hu|id|ie|il|in|is|it|jo|jp|ke|kr|kz|lt|lu|lv|ma|mc|md|me|mn|mo|mt|mw|mx|my|ni|nl|no|nz|oa|pa|pe|ph|pl|pt|ro|rs|ru|se|sg|si|sk|sm|su|sv|th|tj|tr|tt|tw|ua|us|uy|uz|vn|wo|yu|za|zm|zw|py|bo|ve|eu|sa|kg|tn|ae|bh|bn|lb)\b(?!\s*=)', lambda matched : matched.group('country').upper(), result, flags = re.IGNORECASE)
         #将所有国别代码转为大写
-        result = re.sub('(\n\))+\n*$', '\n)\n', result)
-        result = re.sub('\[[\n\s]*(?P<start>\d{1,8})\s*to\s*(?P<end>\d{1,8})[\n\s]*\]', '[\g<start> to \g<end>]', result)#避免方括号内的日期占用三行空间
+        result = re.sub(r'(\n\))+\n*$', '\n)\n', result)
+        result = re.sub(r'\[[\n\s]*(?P<start>\d{1,8})\s*to\s*(?P<end>\d{1,8})[\n\s]*\]', r'[\g<start> to \g<end>]', result)#避免方括号内的日期占用三行空间
         return result.strip()
 
 
