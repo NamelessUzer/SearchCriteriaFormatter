@@ -86,7 +86,7 @@ class Application(Application_ui):
             string = self.textarea.clipboard_get().strip()
             if string == '':
                 raise
-            string = re.sub('[\s\n]+', ' ', string)
+            string = re.sub(r'[\s\n]+', ' ', string)
             string = scFormatter(string)
         except IndexError as e:
             #  print("剪贴板中的检索式不正确")
@@ -108,9 +108,9 @@ class Application(Application_ui):
     def exportResult_oneline(self, event = None):
         text = self.textarea.get('1.0', END)
         if text:
-            text = re.sub('[\s\n]+', ' ', text)
-            text = re.sub('(?<=[(\[])[\s\n\t ]+|[\s\n\t]+(?=[)\]])', '', text)
-            text = re.sub(' *(\(\d?[wWnN]\)) *', ' \g<1> ', text)
+            text = re.sub(r'[\s\n]+', ' ', text)
+            text = re.sub(r'(?<=[(\[])[\s\n\t ]+|[\s\n\t]+(?=[)\]])', '', text)
+            text = re.sub(r' *(\(\d?[wWnN]\)) *', r' \g<1> ', text)
             self.textarea.clipboard_clear()
             self.textarea.clipboard_append(text)
         return text or ''
